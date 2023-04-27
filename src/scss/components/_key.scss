@@ -1,0 +1,108 @@
+.key {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  font-weight: normal;
+  color: $color-main;
+  background-color: $color-dark;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  outline: none;
+  box-shadow: 0 2px 3px $color-light;
+  @include transition();
+  user-select: none;
+
+  &:active {
+    font-size: 17px;
+    border: 1px solid gray;
+    color: $color-dark;
+    background-color: $color-main;
+    box-shadow: 0 0 1px $color-dark;
+    opacity: 0.7;
+  }
+  &_func {
+    letter-spacing: 1.1px;
+    background-color: black;
+  }
+
+  &_backspace {
+    font-size: 16px;
+    width: 135px;
+    &:active {
+      font-size: 15px;
+    }
+  }
+
+  &_tab {
+    width: 80px;
+    font-size: 18px;
+
+    &:active {
+      font-size: 17px;
+    }
+  }
+
+  &_delete {
+    font-size: 11px;
+
+    &:active {
+      font-size: 10px;
+    }
+  }
+  &_capsLock {
+    width: 100px;
+    font-size: 16px;
+
+    &:active {
+      font-size: 15px;
+    }
+  }
+  &_enter {
+    width: 140px;
+
+    &:active {
+      font-size: 17px;
+    }
+  }
+  &_shift {
+    width: 120px;
+
+    &:active {
+      font-size: 17px;
+    }
+  }
+  &_ctrl {
+    width: 65px;
+    font-size: 18px;
+
+    &:active {
+      font-size: 17px;
+    }
+  }
+  &_alt {
+    width: 80px;
+    font-size: 18px;
+
+    &:active {
+      font-size: 17px;
+    }
+  }
+  &_space {
+    width: 320px;
+  }
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.9;
+      cursor: pointer;
+    }
+  }
+}
+
+.hide-lang {
+  display: none;
+}
