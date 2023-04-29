@@ -1,4 +1,4 @@
-import { UTILS } from './utils';
+import { UTILS } from '../utils/utils';
 
 function createFunctionKey(option) {
   const keyBtn = UTILS.createElement('button', `key key_${option.type} key_func`);
@@ -14,7 +14,7 @@ function createFunctionKey(option) {
 }
 
 function createRegularKey(option) {
-  const keyBtn = UTILS.createElement('button', option.type);
+  const keyBtn = UTILS.createElement('button', 'key');
   function createKeyText(lang) {
     const span = UTILS.createElement('span', `key__${lang}`);
     span.textContent = option[lang].regular;
@@ -24,7 +24,7 @@ function createRegularKey(option) {
     return span;
   }
   keyBtn.append(createKeyText('en'));
-  keyBtn.append(createKeyText('ru'));
+  // keyBtn.append(createKeyText('ru'));
   return keyBtn;
 }
 

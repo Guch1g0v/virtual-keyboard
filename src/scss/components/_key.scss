@@ -103,6 +103,31 @@
   }
 }
 
+.active-btn {
+  font-size: 17px;
+  border: 1px solid gray;
+  color: $color-dark;
+  background-color: $color-main;
+  box-shadow: 0 0 1px $color-dark;
+  opacity: 0.7;
+}
+
+.key_delete.active-btn {
+  font-size: 11px;
+  &:active {
+    font-size: 10px;
+  }
+}
+
+.key_backspace.active-btn {
+  font-size: 16px;
+  width: 135px;
+  &:active {
+    font-size: 15px;
+  }
+}
+
 .hide-lang {
   display: none;
+  visibility: hidden;
 }
