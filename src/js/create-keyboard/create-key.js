@@ -13,18 +13,31 @@ function createFunctionKey(option) {
   return keyBtn;
 }
 
+function createSpan(lang, option, selector) {
+  const span = UTILS.createElement('span', selector);
+  span.textContent = option[lang][selector];
+  if (selector !== UTILS.CONSTANTS.statusLowCase) {
+    span.classList.add('hide');
+  }
+  return span;
+}
+
+function createLangType(lang, option) {
+  const div = UTILS.createElement('div', `key__${lang}`);
+  if (lang === 'ru') {
+    div.classList.add('hide');
+  }
+  div.append(createSpan(lang, option, UTILS.CONSTANTS.statusLowCase));
+  div.append(createSpan(lang, option, UTILS.CONSTANTS.statusShift));
+  div.append(createSpan(lang, option, UTILS.CONSTANTS.statusCaps));
+  div.append(createSpan(lang, option, UTILS.CONSTANTS.statusShiftCaps));
+  return div;
+}
+
 function createRegularKey(option) {
   const keyBtn = UTILS.createElement('button', 'key');
-  function createKeyText(lang) {
-    const span = UTILS.createElement('span', `key__${lang}`);
-    span.textContent = option[lang].regular;
-    if (lang !== 'en') {
-      span.classList.add('hide-lang');
-    }
-    return span;
-  }
-  keyBtn.append(createKeyText('en'));
-  // keyBtn.append(createKeyText('ru'));
+  keyBtn.append(createLangType(UTILS.CONSTANTS.en, option));
+  keyBtn.append(createLangType(UTILS.CONSTANTS.ru, option));
   return keyBtn;
 }
 

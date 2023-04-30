@@ -1,27 +1,29 @@
-function keyUp(event) {
-  if (!event.code) {
-    return;
-  }
-  const textArea = document.querySelector('#textarea');
-  textArea.focus();
+import { UTILS } from '../../utils/utils';
+
+const { CONSTANTS } = UTILS;
+
+function makeNoColorBtn(event) {
   const keyHtml = document.querySelector(`#${event.code}`);
-  if (keyHtml) {
-    if (event.code === 'CapsLock') {
-      if (!this.state.capslock) {
-        keyHtml.classList.remove('active-btn');
-      }
-    } else {
-      keyHtml.classList.remove('active-btn');
-    }
-    if (event.key === 'Shift') {
-      const shifts = document.querySelectorAll('.key_shift');
-      if (shifts) {
-        shifts.forEach((shift) => {
-          shift.classList.remove('active-btn');
-        });
-      }
+  if (keyHtml && event.code !== CONSTANTS.capslock) {
+    keyHtml.classList.remove(CONSTANTS.activeBtn);
+    if (event.key === CONSTANTS.shift) {
+      const shifts = document.querySelectorAll(CONSTANTS.keyShiftSelector);
+      shifts.forEach((shift) => {
+        shift.classList.remove(CONSTANTS.activeBtn);
+      });
     }
   }
+}
+
+function keyUp(event) {
+  if (!event.code) return;
+  const textArea = document.querySelector(CONSTANTS.textAreaId);
+  if (event.key === CONSTANTS.shift) {
+    this.state.shift = false;
+    UTILS.changeByState(this.state);
+  }
+  textArea.focus();
+  makeNoColorBtn(event, this.state);
 }
 
 export default keyUp;
