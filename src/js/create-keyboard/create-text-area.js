@@ -1,6 +1,6 @@
 import { UTILS } from '../utils/utils';
 
-const textPlaceHolder = 'OS Windows \nAlt + Ctrl - change language \nEnter text...';
+const textPlaceHolder = 'OS Windows \nAlt + Ctrl - change language';
 
 function createTextArea() {
   const textArea = UTILS.createElement('textarea', 'keybord-text-area');

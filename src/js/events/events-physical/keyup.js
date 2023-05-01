@@ -2,23 +2,14 @@ import { UTILS } from '../../utils/utils';
 
 const { CONSTANTS } = UTILS;
 
-function removeDoubleKeys(key, button, selector) {
-  if (key === button) {
-    const keys = document.querySelectorAll(selector);
-    keys.forEach((dbKey) => {
-      dbKey.classList.remove(CONSTANTS.activeBtn);
-    });
-  }
-}
-
 function makeNoColorBtn(event) {
   const keyHtml = document.querySelector(`#${event.code}`);
   if (keyHtml && event.code !== CONSTANTS.capslock) {
     keyHtml.classList.remove(CONSTANTS.activeBtn);
   }
-  removeDoubleKeys(event.key, CONSTANTS.shift, CONSTANTS.keyShiftSelector);
-  removeDoubleKeys(event.key, CONSTANTS.ctrl, CONSTANTS.keyCotrolSelector);
-  removeDoubleKeys(event.key, CONSTANTS.alt, CONSTANTS.keyAltSelector);
+  UTILS.removeDoubleKeys(event.key, CONSTANTS.shift, CONSTANTS.keyShiftSelector);
+  UTILS.removeDoubleKeys(event.key, CONSTANTS.ctrl, CONSTANTS.keyCotrolSelector);
+  UTILS.removeDoubleKeys(event.key, CONSTANTS.alt, CONSTANTS.keyAltSelector);
 }
 
 function keyUp(event) {

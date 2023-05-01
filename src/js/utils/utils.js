@@ -1,8 +1,6 @@
 function createElement(element, className) {
   const elementHTML = document.createElement(element);
-  if (className) {
-    elementHTML.className = className;
-  }
+  if (className) elementHTML.className = className;
   return elementHTML;
 }
 
@@ -24,6 +22,7 @@ const CONSTANTS = {
   enterSym: '\n',
   backspace: 'Backspace',
   delete: 'Delete',
+  space: 'Space',
   ru: 'ru',
   en: 'en',
   statusLowCase: 'lowCase',
@@ -44,15 +43,17 @@ function deleteClass(className) {
   });
 }
 
-function changeVisibleChars(className, lang, state) {
+function changeVisibleChars(className, state) {
+  state.setCondition(className);
+  const curLang = state.getLang();
   const addLang = state.getAddLang();
   const mainLang = state.getMainLang();
-  if (lang === addLang) {
+  if (curLang === addLang) {
     deleteClass(`.key__${mainLang}`);
   } else {
     deleteClass(`.key__${addLang}`);
   }
-  const languageBtns = document.querySelectorAll(`.key__${lang}`);
+  const languageBtns = document.querySelectorAll(`.key__${curLang}`);
   languageBtns.forEach((div) => {
     div.classList.remove(CONSTANTS.hide);
     const spans = div.querySelectorAll(CONSTANTS.span);
@@ -67,20 +68,77 @@ function changeVisibleChars(className, lang, state) {
 }
 
 function changeByState(state) {
-  const lang = state.getLang();
   if (state.capslock && state.shift) {
-    state.setCondition(CONSTANTS.statusShiftCaps);
-    changeVisibleChars(CONSTANTS.statusShiftCaps, lang, state);
+    changeVisibleChars(CONSTANTS.statusShiftCaps, state);
   } else if (state.capslock) {
-    state.setCondition(CONSTANTS.statusCaps);
-    changeVisibleChars(CONSTANTS.statusCaps, lang, state);
+    changeVisibleChars(CONSTANTS.statusCaps, state);
   } else if (state.shift) {
-    state.setCondition(CONSTANTS.statusShift);
-    changeVisibleChars(CONSTANTS.statusShift, lang, state);
+    changeVisibleChars(CONSTANTS.statusShift, state);
   } else {
-    state.setCondition(CONSTANTS.statusLowCase);
-    changeVisibleChars(CONSTANTS.statusLowCase, lang, state);
+    changeVisibleChars(CONSTANTS.statusLowCase, state);
   }
+}
+
+function removeDoubleKeys(key, button, selector) {
+  if (key === button) {
+    const keys = document.querySelectorAll(selector);
+    keys.forEach((dbKey) => {
+      dbKey.classList.remove(CONSTANTS.activeBtn);
+    });
+  }
+}
+
+function removeDoubleByClick(state, selector, stateKey) {
+  const doubleKeys = document.querySelectorAll(selector);
+  state.changeStateKey(stateKey);
+  doubleKeys.forEach((dKey) => {
+    if (state[stateKey]) {
+      dKey.classList.add(CONSTANTS.activeBtn);
+    } else {
+      dKey.classList.remove(CONSTANTS.activeBtn);
+    }
+  });
+}
+
+function findChar(button, state) {
+  let char;
+  if (button.id === CONSTANTS.enter) {
+    char = CONSTANTS.enterSym;
+  } else if (button.id === CONSTANTS.tab) {
+    char = CONSTANTS.tabSym;
+  } else {
+    const lang = state.getLang();
+    const condition = state.getCondition();
+    const divVisible = button.querySelector(`.key__${lang}`);
+    char = divVisible.querySelector(`.${condition}`).textContent;
+  }
+  return char;
+}
+
+function findCharKeyDown(event, state, keyboardButtons) {
+  event.preventDefault();
+  let char;
+  if (event.key === CONSTANTS.tab) {
+    char = CONSTANTS.tabSym;
+  } else {
+    char = keyboardButtons[event.code][state.getLang()][state.getCondition()];
+  }
+  return char;
+}
+
+function changeLanguage(state) {
+  const curLang = state.getLang();
+  const addLang = state.getAddLang();
+  const mainLang = state.getMainLang();
+  if (curLang === addLang) {
+    state.setLang(mainLang);
+    setLocalStorage(mainLang, addLang);
+  } else {
+    state.setLang(addLang);
+    setLocalStorage(addLang, mainLang);
+  }
+  removeDoubleByClick(state, CONSTANTS.keyAltSelector, 'alt');
+  removeDoubleByClick(state, CONSTANTS.keyCotrolSelector, 'ctrl');
 }
 
 class State {
@@ -93,24 +151,13 @@ class State {
     this.ctrl = false;
     this.alt = false;
     this.status = CONSTANTS.statusLowCase;
-    this.getLang = function getLang() {
-      return this.lang;
-    };
-    this.setLang = function setLang(value) {
-      this.lang = value;
-    };
-    this.getAddLang = function getAddLang() {
-      return this.addLang;
-    };
-    this.getMainLang = function getMainLang() {
-      return this.mainLang;
-    };
-    this.getCondition = function getCondition() {
-      return this.status;
-    };
-    this.setCondition = function setCondition(value) {
-      this.status = value;
-    };
+    this.changeStateKey = (stateKey) => { this[stateKey] = !this[stateKey]; };
+    this.getLang = () => this.lang;
+    this.setLang = (value) => { this.lang = value; };
+    this.getAddLang = () => this.addLang;
+    this.getMainLang = () => this.mainLang;
+    this.getCondition = () => this.status;
+    this.setCondition = (value) => { this.status = value; };
   }
 }
 
@@ -118,6 +165,45 @@ function insertChar(textArea, char) {
   textArea.setRangeText(char, textArea.selectionStart, textArea.selectionEnd, 'end');
 }
 
+function deleteChar(textArea) {
+  textArea.setRangeText('', textArea.selectionStart, textArea.selectionEnd + 1, 'end');
+}
+
+function printSpace(textArea) {
+  textArea.setRangeText(' ', textArea.selectionStart, textArea.selectionEnd, 'end');
+}
+
+function backspaceChar(textArea) {
+  if (textArea.selectionStart) {
+    textArea.setRangeText('', textArea.selectionStart - 1, textArea.selectionEnd, 'end');
+  }
+}
+
+function leftUpCursor(textArea) {
+  if (textArea.selectionStart) {
+    textArea.setRangeText('', textArea.selectionStart - 1, textArea.selectionEnd - 1, 'end');
+  }
+}
+
+function rightDownCursor(textArea) {
+  textArea.setRangeText('', textArea.selectionStart + 1, textArea.selectionEnd + 1, 'end');
+}
+
 exports.UTILS = {
-  CONSTANTS, createElement, changeByState, State, insertChar, setLocalStorage,
+  CONSTANTS,
+  createElement,
+  changeByState,
+  State,
+  insertChar,
+  setLocalStorage,
+  removeDoubleByClick,
+  changeLanguage,
+  findChar,
+  findCharKeyDown,
+  removeDoubleKeys,
+  deleteChar,
+  printSpace,
+  backspaceChar,
+  leftUpCursor,
+  rightDownCursor,
 };

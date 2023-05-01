@@ -5,7 +5,7 @@ import keyboardClick from './events-virtual/keyboard-click';
 
 function events(state) {
   document.querySelector('.keyboard').addEventListener('click', { handleEvent: keyboardClick, state });
-  window.addEventListener('blur', blurKeyboard);
+  window.addEventListener('blur', { handleEvent: blurKeyboard, state });
   window.addEventListener('keydown', { handleEvent: keyDown, state });
   window.addEventListener('keyup', { handleEvent: keyUp, state });
 }
