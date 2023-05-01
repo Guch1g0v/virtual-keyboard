@@ -15,6 +15,10 @@ const CONSTANTS = {
   shift: 'Shift',
   tab: 'Tab',
   tabSym: '\t',
+  enter: 'Enter',
+  enterSym: '\n',
+  backspace: 'Backspace',
+  delete: 'Delete',
   ru: 'ru',
   en: 'en',
   statusLowCase: 'lowCase',
@@ -26,6 +30,8 @@ const CONSTANTS = {
   keyMainLangSelector: '.key__en',
   keyAddLangSelector: '.key__ru',
   keyShiftSelector: '.key_shift',
+  keyCotrolSelector: '.key_ctrl',
+  keyAltSelector: '.key_alt',
 };
 
 function deleteClass(className) {
@@ -79,6 +85,8 @@ class State {
     this.addLang = CONSTANTS.ru;
     this.capslock = false;
     this.shift = false;
+    this.ctrl = false;
+    this.alt = false;
     this.status = CONSTANTS.statusLowCase;
     this.getLang = function getLang() {
       return this.lang;

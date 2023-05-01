@@ -15,6 +15,12 @@ function makeColorKey(code) {
 function keyDown(event) {
   const textArea = document.querySelector(CONSTANTS.textAreaId);
   textArea.focus();
+  if (event.key === CONSTANTS.ctrl) {
+    this.state.ctrl = true;
+  }
+  if (event.key === CONSTANTS.alt) {
+    this.state.alt = true;
+  }
   if ((event.key === CONSTANTS.alt && event.ctrlKey)
   || (event.key === CONSTANTS.ctrl && event.altKey)) {
     if (this.state.getLang() === this.state.addLang) {
@@ -38,6 +44,7 @@ function keyDown(event) {
   if (event.key === CONSTANTS.alt) event.preventDefault();
   makeColorKey(event.code, this.state);
   textArea.focus();
+  console.log(event)
 }
 
 export default keyDown;
