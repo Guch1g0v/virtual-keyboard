@@ -1,7 +1,7 @@
 import { lettersDigits } from '../../state/keyboardButtons';
 import { UTILS } from '../../utils/utils';
 
-function removeDoubleByClick(state, selector, stateKey) {
+export function removeDoubleByClick(state, selector, stateKey) {
   const doubleKeys = document.querySelectorAll(selector);
   state[stateKey] = !state[stateKey];
   doubleKeys.forEach((dKey) => {

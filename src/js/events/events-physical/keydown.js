@@ -1,5 +1,6 @@
 import { lettersDigits, keyboardButtons } from '../../state/keyboardButtons';
 import { UTILS } from '../../utils/utils';
+import { removeDoubleByClick } from '../events-virtual/keyboard-click';
 
 const { CONSTANTS } = UTILS;
 
@@ -15,6 +16,15 @@ function makeColorKey(code) {
 function keyDown(event) {
   const textArea = document.querySelector(CONSTANTS.textAreaId);
   textArea.focus();
+
+  if ((this.state.ctrl && event.altKey) || (this.state.alt && event.ctrlKey)) {
+    if (this.state.getLang() === this.state.addLang) {
+      this.state.setLang(this.state.mainLang);
+    } else this.state.setLang(this.state.addLang);
+    removeDoubleByClick(this.state, UTILS.CONSTANTS.keyAltSelector, 'alt');
+    removeDoubleByClick(this.state, UTILS.CONSTANTS.keyCotrolSelector, 'ctrl');
+  }
+
   if (event.key === CONSTANTS.ctrl) {
     this.state.ctrl = true;
   }
