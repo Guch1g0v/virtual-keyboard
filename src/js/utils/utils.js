@@ -27,8 +27,8 @@ const CONSTANTS = {
   statusShiftCaps: 'shiftCaps',
   hide: 'hide',
   span: 'span',
-  keyMainLangSelector: '.key__en',
-  keyAddLangSelector: '.key__ru',
+  // keyMainLangSelector: '.key__en',
+  // keyAddLangSelector: '.key__ru',
   keyShiftSelector: '.key_shift',
   keyCotrolSelector: '.key_ctrl',
   keyAltSelector: '.key_alt',
@@ -41,11 +41,13 @@ function deleteClass(className) {
   });
 }
 
-function changeVisibleChars(className, lang) {
-  if (lang === CONSTANTS.ru) {
-    deleteClass(CONSTANTS.keyMainLangSelector);
+function changeVisibleChars(className, lang, state) {
+  const addLang = state.getAddLang();
+  const mainLang = state.getMainLang();
+  if (lang === addLang) {
+    deleteClass(`.key__${mainLang}`);
   } else {
-    deleteClass(CONSTANTS.keyAddLangSelector);
+    deleteClass(`.key__${addLang}`);
   }
   const languageBtns = document.querySelectorAll(`.key__${lang}`);
   languageBtns.forEach((div) => {
@@ -65,24 +67,24 @@ function changeByState(state) {
   const lang = state.getLang();
   if (state.capslock && state.shift) {
     state.setCondition(CONSTANTS.statusShiftCaps);
-    changeVisibleChars(CONSTANTS.statusShiftCaps, lang);
+    changeVisibleChars(CONSTANTS.statusShiftCaps, lang, state);
   } else if (state.capslock) {
     state.setCondition(CONSTANTS.statusCaps);
-    changeVisibleChars(CONSTANTS.statusCaps, lang);
+    changeVisibleChars(CONSTANTS.statusCaps, lang, state);
   } else if (state.shift) {
     state.setCondition(CONSTANTS.statusShift);
-    changeVisibleChars(CONSTANTS.statusShift, lang);
+    changeVisibleChars(CONSTANTS.statusShift, lang, state);
   } else {
     state.setCondition(CONSTANTS.statusLowCase);
-    changeVisibleChars(CONSTANTS.statusLowCase, lang);
+    changeVisibleChars(CONSTANTS.statusLowCase, lang, state);
   }
 }
 
 class State {
-  constructor() {
-    this.lang = CONSTANTS.en;
-    this.mainLang = CONSTANTS.en;
-    this.addLang = CONSTANTS.ru;
+  constructor(mainLang, addLang) {
+    this.lang = mainLang;
+    this.mainLang = mainLang;
+    this.addLang = addLang;
     this.capslock = false;
     this.shift = false;
     this.ctrl = false;
@@ -93,6 +95,12 @@ class State {
     };
     this.setLang = function setLang(value) {
       this.lang = value;
+    };
+    this.getAddLang = function getAddLang() {
+      return this.addLang;
+    };
+    this.getMainLang = function getMainLang() {
+      return this.mainLang;
     };
     this.getCondition = function getCondition() {
       return this.status;

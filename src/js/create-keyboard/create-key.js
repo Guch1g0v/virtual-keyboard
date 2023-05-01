@@ -1,4 +1,5 @@
 import { UTILS } from '../utils/utils';
+import keyboardState from '../state/keyboard-state';
 
 function createFunctionKey(option) {
   const keyBtn = UTILS.createElement('button', `key key_${option.type} key_func`);
@@ -24,7 +25,7 @@ function createSpan(lang, option, selector) {
 
 function createLangType(lang, option) {
   const div = UTILS.createElement('div', `key__${lang}`);
-  if (lang === 'ru') {
+  if (keyboardState.getLang() !== lang) {
     div.classList.add('hide');
   }
   div.append(createSpan(lang, option, UTILS.CONSTANTS.statusLowCase));

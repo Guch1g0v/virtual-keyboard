@@ -14,28 +14,25 @@ function makeColorKey(code) {
 }
 
 function keyDown(event) {
+  const curLang = this.state.getLang();
+  const addLang = this.state.getAddLang();
+  const mainLang = this.state.getMainLang();
   const textArea = document.querySelector(CONSTANTS.textAreaId);
   textArea.focus();
-
   if ((this.state.ctrl && event.altKey) || (this.state.alt && event.ctrlKey)) {
-    if (this.state.getLang() === this.state.addLang) {
-      this.state.setLang(this.state.mainLang);
-    } else this.state.setLang(this.state.addLang);
+    if (curLang === addLang) {
+      this.state.setLang(mainLang);
+    } else {
+      this.state.setLang(addLang);
+    }
     removeDoubleByClick(this.state, UTILS.CONSTANTS.keyAltSelector, 'alt');
     removeDoubleByClick(this.state, UTILS.CONSTANTS.keyCotrolSelector, 'ctrl');
   }
-
   if (event.key === CONSTANTS.ctrl) {
     this.state.ctrl = true;
   }
   if (event.key === CONSTANTS.alt) {
     this.state.alt = true;
-  }
-  if ((event.key === CONSTANTS.alt && event.ctrlKey)
-  || (event.key === CONSTANTS.ctrl && event.altKey)) {
-    if (this.state.getLang() === this.state.addLang) {
-      this.state.setLang(this.state.mainLang);
-    } else this.state.setLang(this.state.addLang);
   }
   if (event.key === CONSTANTS.capslock) {
     this.state.capslock = !this.state.capslock;
@@ -54,7 +51,6 @@ function keyDown(event) {
   if (event.key === CONSTANTS.alt) event.preventDefault();
   makeColorKey(event.code, this.state);
   textArea.focus();
-  console.log(event)
 }
 
 export default keyDown;
