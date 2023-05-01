@@ -6,6 +6,11 @@ function createElement(element, className) {
   return elementHTML;
 }
 
+function setLocalStorage(lang1, lang2) {
+  localStorage.setItem('mainLang', lang1);
+  localStorage.setItem('addLang', lang2);
+}
+
 const CONSTANTS = {
   capslock: 'CapsLock',
   activeBtn: 'active-btn',
@@ -27,8 +32,6 @@ const CONSTANTS = {
   statusShiftCaps: 'shiftCaps',
   hide: 'hide',
   span: 'span',
-  // keyMainLangSelector: '.key__en',
-  // keyAddLangSelector: '.key__ru',
   keyShiftSelector: '.key_shift',
   keyCotrolSelector: '.key_ctrl',
   keyAltSelector: '.key_alt',
@@ -116,5 +119,5 @@ function insertChar(textArea, char) {
 }
 
 exports.UTILS = {
-  CONSTANTS, createElement, changeByState, State, insertChar,
+  CONSTANTS, createElement, changeByState, State, insertChar, setLocalStorage,
 };

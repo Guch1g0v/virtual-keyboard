@@ -22,8 +22,10 @@ function keyDown(event) {
   if ((this.state.ctrl && event.altKey) || (this.state.alt && event.ctrlKey)) {
     if (curLang === addLang) {
       this.state.setLang(mainLang);
+      UTILS.setLocalStorage(mainLang, addLang);
     } else {
       this.state.setLang(addLang);
+      UTILS.setLocalStorage(addLang, mainLang);
     }
     removeDoubleByClick(this.state, UTILS.CONSTANTS.keyAltSelector, 'alt');
     removeDoubleByClick(this.state, UTILS.CONSTANTS.keyCotrolSelector, 'ctrl');

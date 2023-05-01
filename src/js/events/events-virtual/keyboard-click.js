@@ -80,7 +80,11 @@ function keyboardClick(event) {
   && this.state.ctrl) {
     if (this.state.getLang() === this.state.addLang) {
       this.state.setLang(this.state.mainLang);
-    } else this.state.setLang(this.state.addLang);
+      UTILS.setLocalStorage(this.state.mainLang, this.state.addLang);
+    } else {
+      this.state.setLang(this.state.addLang);
+      UTILS.setLocalStorage(this.state.addLang, this.state.mainLang);
+    }
     UTILS.changeByState(this.state);
     removeDoubleByClick(this.state, UTILS.CONSTANTS.keyAltSelector, 'alt');
     removeDoubleByClick(this.state, UTILS.CONSTANTS.keyCotrolSelector, 'ctrl');
@@ -89,7 +93,11 @@ function keyboardClick(event) {
   && this.state.alt) {
     if (this.state.getLang() === this.state.addLang) {
       this.state.setLang(this.state.mainLang);
-    } else this.state.setLang(this.state.addLang);
+      UTILS.setLocalStorage(this.state.mainLang, this.state.addLang);
+    } else {
+      this.state.setLang(this.state.addLang);
+      UTILS.setLocalStorage(this.state.addLang, this.state.mainLang);
+    }
     UTILS.changeByState(this.state);
     removeDoubleByClick(this.state, UTILS.CONSTANTS.keyAltSelector, 'alt');
     removeDoubleByClick(this.state, UTILS.CONSTANTS.keyCotrolSelector, 'ctrl');
