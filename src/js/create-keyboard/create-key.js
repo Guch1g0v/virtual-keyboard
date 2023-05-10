@@ -1,8 +1,11 @@
-import { UTILS } from '../utils/utils';
 import keyboardState from '../state/keyboard-state';
+import { UTILS } from '../utils/utils';
 
 function createFunctionKey(option) {
-  const keyBtn = UTILS.createElement('button', `key key_${option.type} key_func`);
+  const keyBtn = UTILS.createElement(
+    'button',
+    `key key_${option.type} key_func`,
+  );
   const span = UTILS.createElement('span');
   span.textContent = option.type.charAt(0).toUpperCase() + option.type.slice(1);
   if (option.type === 'space') span.textContent = '';

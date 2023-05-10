@@ -151,13 +151,19 @@ class State {
     this.ctrl = false;
     this.alt = false;
     this.status = CONSTANTS.statusLowCase;
-    this.changeStateKey = (stateKey) => { this[stateKey] = !this[stateKey]; };
+    this.changeStateKey = (stateKey) => {
+      this[stateKey] = !this[stateKey];
+    };
     this.getLang = () => this.lang;
-    this.setLang = (value) => { this.lang = value; };
+    this.setLang = (value) => {
+      this.lang = value;
+    };
     this.getAddLang = () => this.addLang;
     this.getMainLang = () => this.mainLang;
     this.getCondition = () => this.status;
-    this.setCondition = (value) => { this.status = value; };
+    this.setCondition = (value) => {
+      this.status = value;
+    };
   }
 }
 
